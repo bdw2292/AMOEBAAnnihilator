@@ -25,7 +25,7 @@ export PYTHONPATH=/home/bdw2292/:$PYTHONPATH
 
 ## Environment Bashrc Example For GPU Tinker
 ```
-conda activate amoebamd
+conda activate /home/bdw2292/miniconda3/envs/amoebamd
 export CUDA_HOME=/usr/local/cuda-10.2/
 export PATH=$PATH:$CUDA_HOME/bin/
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$CUDA_HOME/lib:$LD_LIBRARY_PATH
