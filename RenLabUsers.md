@@ -2,11 +2,12 @@
 
 ## Install Annihilator and Daemon
 ```
-mkdir ~./AMOEBAAnnihilator~./AMOEBAAnnihilator
-cd 
+mkdir ~./AMOEBAAnnihilator
+cd ~./AMOEBAAnnihilator
 git clone https://github.com/bdw2292/AMOEBAAnnihilator.git
-mkdir ~./RenLabDaemon
-cd ~./RenLabDaemon
+
+mkdir ~./Ren-Lab-Daemon
+cd ~./Ren-Lab-Daemon
 git clone https://github.com/bdw2292/Ren-Lab-Daemon.git
 ```
 
@@ -25,7 +26,7 @@ export PYTHONPATH=/home/bdw2292/:$PYTHONPATH
 
 ## Environment Bashrc Example For GPU Tinker
 ```
-conda activate amoebamd
+conda activate /home/bdw2292/miniconda3/envs/amoebamd
 export CUDA_HOME=/usr/local/cuda-10.2/
 export PATH=$PATH:$CUDA_HOME/bin/
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$CUDA_HOME/lib:$LD_LIBRARY_PATH
