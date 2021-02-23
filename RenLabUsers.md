@@ -2,11 +2,12 @@
 
 ## Install Annihilator and Daemon
 ```
-mkdir ~./AMOEBAAnnihilator~./AMOEBAAnnihilator
-cd 
+mkdir ~./AMOEBAAnnihilator
+cd ~./AMOEBAAnnihilator
 git clone https://github.com/bdw2292/AMOEBAAnnihilator.git
-mkdir ~./RenLabDaemon
-cd ~./RenLabDaemon
+
+mkdir ~./Ren-Lab-Daemon
+cd ~./Ren-Lab-Daemon
 git clone https://github.com/bdw2292/Ren-Lab-Daemon.git
 ```
 
