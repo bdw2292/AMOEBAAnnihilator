@@ -138,7 +138,7 @@ alias analyze_omm.x=$OPENMMHOME/analyze_omm.x
 ```
 
 * Example keyword for Ren-Lab-Daemon submission script (in AMOEBA.ini file) 
-* Make sure to follow readme instructions in Daemon before running Annihilator program, https://github.com/bdw2292/Ren-Lab-Daemon/blob/main/README_HELP.MD
+* Make sure to have understanding of how Daemon works before running Annihilator program, https://github.com/bdw2292/Ren-Lab-Daemon/blob/main/README_HELP.MD
 * Daemon does not need to be called directly, the annihilator program will do this for you. However, make sure to comment out hostnames that are reserved by other people (or add CPUONLY/GPUONLY).
 ```
 externalapi=/home/bdw2292/ExternalAPIRenLab/submit.py
