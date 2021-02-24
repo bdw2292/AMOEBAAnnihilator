@@ -107,6 +107,7 @@ rm -r buildWithCuda10.0
 ```
 conda create -n amoebamd python=3.6 --yes
 conda activate amoebamd
+conda install matplotlib --yes
 conda install -c conda-forge openbabel=2.4.1 --yes
 conda install -c conda-forge mdtraj --yes
 
