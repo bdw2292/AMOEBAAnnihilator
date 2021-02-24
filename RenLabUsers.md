@@ -47,5 +47,6 @@ externalapi=/home/bdw2292/ExternalAPIRenLab/submit.py
 ```
 
 * Make sure to have an understanding of how Daemon works before running Annihilator program, https://github.com/bdw2292/Ren-Lab-Daemon/blob/main/README_HELP.MD
+* Make sure all hostnames are in your RSA keys (ssh into each hostname from NOVA manually)
 * Daemon does not need to be called directly, the annihilator program will do this for you. However, make sure to comment out hostnames that are reserved by other people (or add CPUONLY/GPUONLY).
 
