@@ -7,6 +7,8 @@ import terminate as term
 import sys
 import time
 import numpy as np
+import mutation as mutate
+
 
 def ExecuteProductionDynamics(annihilator):
    jobtolog={}
@@ -45,11 +47,19 @@ def SetupProductionDynamics(annihilator):
    if not os.path.isdir(annihilator.outputpath+annihilator.simfoldname):
        os.mkdir(annihilator.outputpath+annihilator.simfoldname)
    os.chdir(annihilator.outputpath+annihilator.simfoldname)
+   if len(annihilator.mutlambdascheme)==0:
+       mut=False
+   else:
+       mut=True
    for i in range(len(annihilator.lambdafolderlist)):
        fold=annihilator.lambdafolderlist[i]
-       elelamb=annihilator.estatlambdascheme[i]
-       vdwlamb=annihilator.vdwlambdascheme[i]
-       if annihilator.complexation==True:
+       if mut==False:
+           elelamb=annihilator.estatlambdascheme[i]
+           vdwlamb=annihilator.vdwlambdascheme[i]
+       else:
+           mutlambda=annihilator.mutlambdascheme[i]
+
+       if annihilator.complexation==True and annihilator.dontrestrainreceptorligand==False:
            reslambda=annihilator.restlambdascheme[i]
        else:
            reslambda=0
@@ -58,10 +68,17 @@ def SetupProductionDynamics(annihilator):
        os.chdir(fold)
        newfoldpath=os.getcwd()+'/'
        newtempkeyfile=annihilator.proddynwaterboxfilename.replace('.xyz','.key')
-       shutil.copyfile(annihilator.outputpath+annihilator.lambdakeyfilename,newfoldpath+newtempkeyfile)
+       if mut==False:
+           shutil.copyfile(annihilator.outputpath+annihilator.lambdakeyfilename,newfoldpath+newtempkeyfile)
+       else:
+           arrayoflinearrays=mutate.MutateAllParameters(annihilator,annihilator.bgnlinetoendline,mutlambda)
+           mutate.GenerateKeyFile(annihilator,arrayoflinearrays,newfoldpath+newtempkeyfile)
+           keymods.InsertKeyfileHeader(annihilator,newfoldpath+newtempkeyfile)
+    
        outputboxname=newfoldpath+annihilator.proddynwaterboxfilename
        shutil.copyfile(annihilator.outputpath+annihilator.proddynwaterboxfilename,outputboxname)
-       ModifyLambdaKeywords(annihilator,newfoldpath,newtempkeyfile,elelamb,vdwlamb,reslambda)
+       if mut==False:
+           ModifyLambdaKeywords(annihilator,newfoldpath,newtempkeyfile,elelamb,vdwlamb,reslambda)
 
        os.chdir('..')
    os.chdir('..')
@@ -194,24 +211,24 @@ def GrabIonIndexes(annihilator,ionnumber,boxfilename,iontypenumber):
             index=int(linesplit[0])
             typenum=int(linesplit[5]) 
             if typenum==int(iontypenumber):
-                print('found one',flush=True)
                 ionindexes.append(index)
                 count+=1 
     return ionindexes
 
 
 def ProductionDynamicsProtocol(annihilator):
-    if not os.path.isfile(annihilator.outputpath+annihilator.lambdakeyfilename):
-        shutil.copyfile(annihilator.outputpath+annihilator.configkeyfilename,annihilator.outputpath+annihilator.lambdakeyfilename)
-        string='ligand'+' '
-        firstligidx=str(annihilator.ligandindices[0])
-        lastligidx=str(annihilator.ligandindices[-1])
-        string+='-'+firstligidx+' '+lastligidx+'\n'
-        keymods.AddKeyWord(annihilator,annihilator.lambdakeyfilename,string)
-        string='ele-lambda'+'\n'
-        keymods.AddKeyWord(annihilator,annihilator.lambdakeyfilename,string)
-        string='vdw-lambda'+'\n'
-        keymods.AddKeyWord(annihilator,annihilator.lambdakeyfilename,string)
+    if len(annihilator.mutlambdascheme)!=0:
+        if not os.path.isfile(annihilator.outputpath+annihilator.lambdakeyfilename):
+            shutil.copyfile(annihilator.outputpath+annihilator.configkeyfilename,annihilator.outputpath+annihilator.lambdakeyfilename)
+            string='ligand'+' '
+            firstligidx=str(annihilator.ligandindices[0])
+            lastligidx=str(annihilator.ligandindices[-1])
+            string+='-'+firstligidx+' '+lastligidx+'\n'
+            keymods.AddKeyWord(annihilator,annihilator.lambdakeyfilename,string)
+            string='ele-lambda'+'\n'
+            keymods.AddKeyWord(annihilator,annihilator.lambdakeyfilename,string)
+            string='vdw-lambda'+'\n'
+            keymods.AddKeyWord(annihilator,annihilator.lambdakeyfilename,string)
 
     ionindexes,charge=DetermineIonIndicesToModifyCharge(annihilator)
     keymods.AddMultipoleDefinitionsForIonIndices(annihilator,ionindexes,charge,annihilator.lambdakeyfilename)

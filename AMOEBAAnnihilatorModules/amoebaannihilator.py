@@ -8,10 +8,17 @@ import pdbxyz
 import restraints
 import openbabel
 import plots
+import mutation as mutate
 
 class Annihilator():
 
-    def __init__(self,minonly=False,usegpu=True,truedynamicpath=None,truebarpath=None,equilonly=False,binding=False,proddyngrprests=False,equilrestrainsphereradius=2,restrainpositionconstant=1,ligandfilename=None,tightmincriteria=1,loosemincriteria=10,rescorrection=0,anglerestraintconstant=0.003046,pdbxyzpath='pdbxyz.x',distancerestraintconstant=10,minimizepath='minimize.x',tinkerdir=None,averageenergies=False,roomtemp=300,complexedproteinpdbname=None,uncomplexedproteinpdbname=None,addphysioions=True,equilibriatescheme=[50,100,150,200,300],equilibriaterestscheme=[5,2,1,.1,0],prmfilepath=os.path.abspath(os.path.join(os.path.split(__file__)[0] , os.pardir))+ "/ParameterFiles/amoebabio18.prm",keyfilename=None,xyzfilename=None,externalapi=None,bashrcpath=None,restrainatomsduringminimization=True,restrainatomgroup1=None,restrainatomgroup2=None,ligandxyzfilename=None,receptorligandxyzfilename=None,xyzeditpath='xyzedit.x',lowerperf=7,upperperf=12,simpathlist=None,fixedboxsize=None,extendelelambdaoneside=[],estatlambdascheme=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1,1],extendelelambdazeroside=[],vdwlambdascheme=[0,.45,.52,.56,.58,.6,.62,.64,.67,.7,.75,.8,.85,.9,.95,1,1,1,1,1,1,1,1,1,1,1,1],extendvdwlambdaoneside=[],extendvdwlambdazeroside=[],restlambdascheme=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],extendrestlambdaoneside=[],extendrestlambdazeroside=[],waitingtime=5,boxbufferlength=3,receptorcharge=0,ligandcharge=0,barpath='bar.x',dynamicpath='dynamic.x',barommpath='bar_omm.x',dynamicommpath='dynamic_omm.x',complexation=False,solvation=False,flatbotrest=True,logname='TINKER.log',equilwritefreq=100,proddynwritefreq=2,equiltimeNVT=5,equiltimeNPT=2,equiltimestep=2,proddyntimestep=2,proddyntime=5,pressure=1,NVTensem=2,NPTensem=4,vdwcutoff=12,ewaldcutoff=7,polareps=0.0001,barostatmethod='montecarlo',integrator='RESPA',thermostat='BUSSI',listofsaltcons='[KCl]=100'):
+    def __init__(self,endstatekey=None,bgnstatekey=None,endstatexyz=None,bgnstatexyz=None,dontrestrainreceptorligand=False,mutlambdascheme=[],minonly=False,usegpu=True,truedynamicpath=None,truebarpath=None,equilonly=False,binding=False,proddyngrprests=False,equilrestrainsphereradius=2,restrainpositionconstant=1,ligandfilename=None,tightmincriteria=1,loosemincriteria=10,rescorrection=0,anglerestraintconstant=0.003046,pdbxyzpath='pdbxyz.x',distancerestraintconstant=10,minimizepath='minimize.x',tinkerdir=None,averageenergies=False,roomtemp=300,complexedproteinpdbname=None,uncomplexedproteinpdbname=None,addphysioions=True,equilibriatescheme=[50,100,150,200,300],equilibriaterestscheme=[5,2,1,.1,0],prmfilepath=os.path.abspath(os.path.join(os.path.split(__file__)[0] , os.pardir))+ "/ParameterFiles/amoebabio18.prm",keyfilename=None,xyzfilename=None,externalapi=None,bashrcpath=None,restrainatomsduringminimization=True,restrainatomgroup1=None,restrainatomgroup2=None,ligandxyzfilename=None,receptorligandxyzfilename=None,xyzeditpath='xyzedit.x',lowerperf=7,upperperf=12,simpathlist=None,fixedboxsize=None,extendelelambdaoneside=[],estatlambdascheme=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1,1],extendelelambdazeroside=[],vdwlambdascheme=[0,.45,.52,.56,.58,.6,.62,.64,.67,.7,.75,.8,.85,.9,.95,1,1,1,1,1,1,1,1,1,1,1,1],extendvdwlambdaoneside=[],extendvdwlambdazeroside=[],restlambdascheme=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],extendrestlambdaoneside=[],extendrestlambdazeroside=[],waitingtime=5,boxbufferlength=3,receptorcharge=0,ligandcharge=0,barpath='bar.x',dynamicpath='dynamic.x',barommpath='bar_omm.x',dynamicommpath='dynamic_omm.x',complexation=False,solvation=False,flatbotrest=True,logname='TINKER.log',equilwritefreq=100,proddynwritefreq=2,equiltimeNVT=5,equiltimeNPT=2,equiltimestep=2,proddyntimestep=2,proddyntime=5,pressure=1,NVTensem=2,NPTensem=4,vdwcutoff=12,ewaldcutoff=7,polareps=0.0001,barostatmethod='montecarlo',integrator='RESPA',thermostat='BUSSI',listofsaltcons='[KCl]=100'):
+        self.endstatekey=endstatekey
+        self.bgnstatekey=bgnstatekey
+        self.endstatexyz=endstatexyz
+        self.bgnstatexyz=bgnstatexyz
+        self.dontrestrainreceptorligand=dontrestrainreceptorligand
+        self.mutlambdascheme=mutlambdascheme
         self.minonly=minonly
         self.usegpu=usegpu
         self.truedynamicpath=truedynamicpath
@@ -141,6 +148,8 @@ class Annihilator():
                 self.flatbotrest=False
             elif "proddyngrprests" in line:
                 self.proddyngrprests=True
+            elif "dontrestrainreceptorligand" in line:
+                self.dontrestrainreceptorligand=True
             elif "extendelelambdaoneside" in line:
                 self.extendelelambdaoneside=commalist
             elif "extendvdwlambdaoneside" in line:
@@ -179,7 +188,7 @@ class Annihilator():
                 self.waitingtime = float(a)
             elif ("listofsaltcons") in line:
                 self.listofsaltcons = a
-            elif ("ligandxyzfilename") in line:
+            elif ("ligandxyzfilename") in line and "receptor" not in line:
                 self.ligandxyzfilename = a
             elif ("ligandfilename") in line:
                 self.ligandfilename = a
@@ -197,12 +206,22 @@ class Annihilator():
                 self.ewaldcutoff = a
             elif ("polareps") in line:
                 self.polareps = a
+            elif ("bgnstatexyz") in line:
+                self.bgnstatexyz = a
+            elif ("endstatexyz") in line:
+                self.endstatexyz = a
+            elif ("bgnstatekey") in line:
+                self.bgnstatekey = a
+            elif ("endstatekey") in line:
+                self.endstatekey = a
             elif ("distancerestraintconstant") in line:
                 self.distancerestraintconstant= float(a)
             elif ("anglerestraintconstant") in line:
                 self.anglerestraintconstant= float(a)
             elif ("equilibriatescheme") in line:
                 self.equilibriatescheme=commalist
+            elif ("mutlambdascheme") in line:
+                self.mutlambdascheme=commalist
             elif ("restlambdascheme") in line:
                 self.restlambdascheme=commalist
             elif ("vdwlambdascheme") in line:
@@ -233,10 +252,13 @@ class Annihilator():
                 self.minonly=True
             elif ("equilrestlambdascheme") in line:
                 self.equilrestlambdascheme=commalist
+        if self.ligandxyzfilename==None:
+            self.ligandxyzfilename='None'
+        if self.uncomplexedproteinpdbname==None:
+            self.uncomplexedproteinpdbname='None'
         self.outputpath=os.path.join(os.getcwd(),'')
         self.logfh=open(self.outputpath+self.logname,'a+')
         self.SanitizeMMExecutables()
-
         if self.simpathlist!=None:
             self.binding=True
             tables.GrabSimDataFromPathList(self)
@@ -250,7 +272,7 @@ class Annihilator():
             self.receptorligandxyzfilename=self.complexedxyzname
             self.ReadReceptorCharge()
             pdbxyz.GenerateProteinTinkerXYZFile(self)
-        elif self.complexation==True and self.uncomplexedproteinpdbname==None and self.complexedproteinpdbname==None: 
+        elif self.complexation==True and self.uncomplexedproteinpdbname==None and self.complexedproteinpdbname==None and self.receptorligandxyzfilename==None: 
             raise ValueError('Missing either uncomplexed or complexed proteinpdbname')
         if self.ligandfilename!=None:
             self.ReadLigandCharge()
@@ -264,6 +286,7 @@ class Annihilator():
             self.xyzfilename=self.ligandxyzfilename
         elif self.complexation==True:
             self.xyzfilename=self.receptorligandxyzfilename
+
         self.elementsymtotinktype={'K':box.GrabTypeNumber(self,'Potassium Ion K+'),'Cl':box.GrabTypeNumber(self,'Chloride Ion Cl-'),'Mg':box.GrabTypeNumber(self,'Magnesium Ion Mg+2'),'Li':box.GrabTypeNumber(self,'Lithium Ion Li+'),'Na':box.GrabTypeNumber(self,'Sodium Ion Na+'),'Rb':box.GrabTypeNumber(self,'Rubidium Ion Rb+'),'Cs':box.GrabTypeNumber(self,'Cesium Ion Cs+'),'Be':box.GrabTypeNumber(self,'Beryllium Ion Be+2'),'Ca':box.GrabTypeNumber(self,'Calcium Ion Ca+2'),'Zn':box.GrabTypeNumber(self,'Zinc Ion Zn+2'),'Mg+':box.GrabTypeNumber(self,'Magnesium Ion Mg+2')}
         self.waterOtypenum=349
         self.waterHtypenum=350 
@@ -317,19 +340,31 @@ class Annihilator():
         self.nextfiletofinish=self.equiloutputarray[0]
         self.lambdafolderlist=[]
         self.proddynoutfilepath=[]
-        for i in range(len(self.vdwlambdascheme)):
-            elelamb=self.estatlambdascheme[i]
-            vdwlamb=self.vdwlambdascheme[i]
-            if 'Comp' in self.simfoldname:
-                rest=self.restlambdascheme[i]
-                fold=self.simfoldname+"Ele%s_Vdw%s_Res%s"%(elelamb,vdwlamb,rest)
-            else:
-                fold=self.simfoldname+"Ele%s_Vdw%s"%(elelamb,vdwlamb)
-            self.lambdafolderlist.append(fold)
-            outputfilepath=os.getcwd()+'/'+self.simfoldname+'/'+fold+'/'
-            outputfilepath+=fold+'.out'
-            self.proddynoutfilepath.append(outputfilepath)
-
+        mut=False
+        if len(self.mutlambdascheme)==0:
+            for i in range(len(self.vdwlambdascheme)):
+                elelamb=self.estatlambdascheme[i]
+                vdwlamb=self.vdwlambdascheme[i]
+                if 'Comp' in self.simfoldname:
+                    rest=self.restlambdascheme[i]
+                    fold=self.simfoldname+"Ele%s_Vdw%s_Res%s"%(elelamb,vdwlamb,rest)
+                else:
+                    fold=self.simfoldname+"Ele%s_Vdw%s"%(elelamb,vdwlamb)
+                self.lambdafolderlist.append(fold)
+                outputfilepath=os.getcwd()+'/'+self.simfoldname+'/'+fold+'/'
+                outputfilepath+=fold+'.out'
+                self.proddynoutfilepath.append(outputfilepath)
+        else:
+            mut=True
+            for i in range(len(self.mutlambdascheme)):
+                mutlambda=self.mutlambdascheme[i]
+                fold=self.simfoldname+"Mut%s"%(mutlambda)
+                self.lambdafolderlist.append(fold)
+                outputfilepath=os.getcwd()+'/'+self.simfoldname+'/'+fold+'/'
+                outputfilepath+=fold+'.out'
+                self.proddynoutfilepath.append(outputfilepath)
+        if mut==True:
+            mutate.SingleTopologyMutationProtocol(self)
 
         self.baroutputfilepath=[]
         self.barfilepath=[]

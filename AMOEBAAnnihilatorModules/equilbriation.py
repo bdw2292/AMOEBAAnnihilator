@@ -86,7 +86,7 @@ def ExecuteEquilibriation(annihilator):
         if finished==False:
             if annihilator.complexation==True:
                 keymods.RemoveKeyWord(annihilator,annihilator.configkeyfilename,'restrain-position')
-                if restrainpositionconstant!=0: # dont add for NPT only NVT
+                if restrainpositionconstant!=0 and annihilator.dontrestrainreceptorligand==False: # dont add for NPT only NVT
                     resposstring='restrain-position -'+str(1)+' '+str(annihilator.totalatomnumberxyzfilename-len(annihilator.ligandindices))+' '+str(restrainpositionconstant)+' '+str(annihilator.equilrestrainsphereradius)+'\n'
                     keymods.AddKeyWord(annihilator,annihilator.outputpath+annihilator.configkeyfilename,resposstring)
 
@@ -155,12 +155,13 @@ def ExtractTinkerFrames(annihilator,arcpath,firstframe,lastframe,framestep,total
     return
   
 def EquilibriationProtocol(annihilator):
-    if annihilator.restrainatomgroup1==None and annihilator.restrainatomgroup2==None and annihilator.complexation==True: # then find some groups
+    if annihilator.restrainatomgroup1==None and annihilator.restrainatomgroup2==None and annihilator.complexation==True and annihilator.dontrestrainreceptorligand==False:
         restraints.ComputeIdealGroupRestraints(annihilator,annihilator.minwaterboxfilename)
-    if annihilator.complexation==True: 
+    if annihilator.complexation==True and annihilator.dontrestrainreceptorligand==False: 
         dist=restraints.AverageCOMGroups(annihilator,annihilator.minwaterboxfilename)
         annihilator.restraintdistance=dist
-        restraints.AddHarmonicRestrainGroupTermsToKeyFile(annihilator,annihilator.outputpath+annihilator.configkeyfilename,dist)
+        if annihilator.dontrestrainreceptorligand==False:
+            restraints.AddHarmonicRestrainGroupTermsToKeyFile(annihilator,annihilator.outputpath+annihilator.configkeyfilename,dist)
 
     shutil.copy(annihilator.minwaterboxfilename,annihilator.equilwaterboxfilename)
     ExecuteEquilibriation(annihilator)
@@ -176,10 +177,12 @@ def EquilibriationProtocol(annihilator):
     if annihilator.complexation==True and annihilator.proddyngrprests==True:
         equildist=restraints.AverageCOMGroups(annihilator,annihilator.equilarcwaterboxfilename)
         annihilator.restraintdistance=equildist
-        restraints.AddHarmonicRestrainGroupTermsToKeyFile(annihilator,annihilator.outputpath+annihilator.configkeyfilename,equildist)
-        restraints.GroupRestraintFreeEnergyFix(annihilator)
+        if annihilator.dontrestrainreceptorligand==False:
+            restraints.AddHarmonicRestrainGroupTermsToKeyFile(annihilator,annihilator.outputpath+annihilator.configkeyfilename,equildist)
+            restraints.GroupRestraintFreeEnergyFix(annihilator)
     elif annihilator.complexation==True and annihilator.proddyngrprests==False:
-        restraints.ComputeIdealRestraints(annihilator,annihilator.equilarcwaterboxfilename)
+        if annihilator.dontrestrainreceptorligand==False:
+            restraints.ComputeIdealRestraints(annihilator,annihilator.equilarcwaterboxfilename)
 
     #if not os.path.isfile(annihilator.outputpath+annihilator.proddynwaterboxfilenamepymol):
     #    annihilator.MakeTinkerXYZFileBabelReadable(annihilator.proddynwaterboxfilename)

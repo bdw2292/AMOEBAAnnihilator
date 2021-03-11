@@ -72,6 +72,14 @@ def InsertKeyfileHeader(annihilator,keyfilename):
     string='barostat'+' '+annihilator.barostatmethod+'\n'
     if not CheckIfStringAlreadyInKeyfile(annihilator,keyfilename,string):
         AddKeyWord(annihilator,keyfilename,string)
+    string='heavy-hydrogen'+'\n'
+    if annihilator.equiltimestep>=3 and annihilator.proddyntimestep>=3:
+       if not CheckIfStringAlreadyInKeyfile(annihilator,keyfilename,string):
+           AddKeyWord(annihilator,keyfilename,string)
+
+
+
+
 
 def AddMultipoleDefinitionsForIonIndices(annihilator,ionindexes,charge,keyfilepath):
     for ionindex in ionindexes:

@@ -15,6 +15,7 @@ ligandxyzfilename=aniline.xyz
 
 ### Minimum Input Example Solvation
 * Input inside AMOEBA.ini
+* Make sure that extended conformation is used, to ensure correct box size to avoid interacting with self images.
 ```
 solvation
 keyfilename=aniline.key
@@ -146,4 +147,26 @@ receptorcharge                          Input charge for protein. If uncomplexed
 externalapi                             External script path for submitting MD jobs. Used with submitjobs.py. 
                                         submitjobs.py needs to be edited for user specific subimssion script.
                                         Default=None
+
+dontrestrainreceptorligand              Dont use any restraints between ligand and protein (for example if ligand                                            is covalently bonded).
+                                        Default=False
+```
+
+### Mutation Inputs
+```
+bgnstatekey                             First state key file for mutation.
+                                        Default=None
+
+endstatekey                             End state key file for mutation.
+                                        Default=None
+
+bgnstatexyz                             First state xyz file for mutation.
+                                        Default=None
+
+endstatexyz                             End state xyz file for mutation.
+                                        Default=None
+
+mutlambdascheme                         Lambda scheme (from 0 to 1) of mutation of any parameters between begin and 
+                                        end state keyfiles.
+                                        Default=[]
 ```
