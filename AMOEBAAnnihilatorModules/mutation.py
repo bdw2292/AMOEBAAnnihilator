@@ -300,7 +300,6 @@ def MutateAllParameters(annihilator,bgnlinetoendline,mutlambda):
     for array in arrayofprmarrays:
         mutarray=MutateParameters(annihilator,array,bgnlinetoendline,mutlambda)
         mutarrayofprmarrays.append(array)
-    sys.exit()
     return mutarrayofprmarrays
 
 def MutateParameters(annihilator,bgnstateprmlines,bgnlinetoendline,mutlambda):
