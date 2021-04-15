@@ -59,6 +59,20 @@ def SumTheFreeEnergyStepsFromBAR(annihilator):
     annihilator.freeenergy=0
     annihilator.freeenergylist=[]
     annihilator.freeenergyerrorlist=[]
+    annihilator.freeenergyfwd=0
+    annihilator.freeenergylistfwd=[]
+    annihilator.freeenergyerrorlistfwd=[]
+    annihilator.freeenergybwd=0
+    annihilator.freeenergylistbwd=[]
+    annihilator.freeenergyerrorlistbwd=[]
+
+    annihilator.freeenergyviabariter=0
+    annihilator.freeenergylistviabariter=[]
+    annihilator.freeenergyerrorlistviabariter=[]
+    annihilator.freeenergyviabootstrap=0
+    annihilator.freeenergylistviabootstrap=[]
+    annihilator.freeenergyerrorlistviabootstrap=[]
+
     annihilator.enthalpy=0
     annihilator.enthalpylist=[]
     annihilator.enthalpyerrorlist=[]
@@ -84,6 +98,10 @@ def SumTheFreeEnergyStepsFromBAR(annihilator):
                 annihilator.freeenergy+=freeenergy
                 annihilator.freeenergylist.append(freeenergy)
                 annihilator.freeenergyerrorlist.append(freenergyerror)
+                annihilator.freeenergyviabariter+=freeenergy
+                annihilator.freeenergylistviabariter.append(freeenergy)
+                annihilator.freeenergyerrorlistviabariter.append(freenergyerror)
+
             elif 'Free Energy via BAR Bootstrap' in line and foundfreeenergyline==False: # for some cases Free Energy via BAR Iteration does not appear
                 foundfreeenergyline=True
                 linesplit=line.split()
@@ -95,6 +113,10 @@ def SumTheFreeEnergyStepsFromBAR(annihilator):
                 annihilator.freeenergy+=freeenergy
                 annihilator.freeenergylist.append(freeenergy)
                 annihilator.freeenergyerrorlist.append(freenergyerror)
+                annihilator.freeenergyviabootstrap+=freeenergy
+                annihilator.freeenergylistviabootstrap.append(freeenergy)
+                annihilator.freeenergyerrorlistviabootstrap.append(freenergyerror)
+
             elif 'Enthalpy via BAR Estimate' in line:
                 linesplit=line.split()
                 enthalpy=float(linesplit[4])
@@ -112,6 +134,28 @@ def SumTheFreeEnergyStepsFromBAR(annihilator):
                 annihilator.entropy+=entropy
                 annihilator.entropylist.append(entropy)
                 annihilator.entropyerrorlisttotal.append(entropyerror)
+            elif 'Free Energy via Forward FEP' in line:
+                linesplit=line.split()
+                freeenergy=float(linesplit[5])
+                index=line.find('+/-')
+                newstring=line[index+3:]
+                newstringlinesplit=newstring.split()
+                freenergyerror=float(newstringlinesplit[0])
+                annihilator.freeenergyfwd+=freeenergy
+                annihilator.freeenergylistfwd.append(freeenergy)
+                annihilator.freeenergyerrorlistfwd.append(freenergyerror)
+            elif 'Free Energy via Backward FEP' in line:
+                linesplit=line.split()
+                freeenergy=float(linesplit[5])
+                index=line.find('+/-')
+                newstring=line[index+3:]
+                newstringlinesplit=newstring.split()
+                freenergyerror=float(newstringlinesplit[0])
+                annihilator.freeenergybwd+=freeenergy
+                annihilator.freeenergylistbwd.append(freeenergy)
+                annihilator.freeenergyerrorlistbwd.append(freenergyerror)
+
+
         temp.close()
 
 
@@ -144,6 +188,12 @@ def SumTheFreeEnergyStepsFromBAR(annihilator):
             if annihilator.solvation==True:
                 energy_writer.writerow([u'ΔGˢᵒˡᵛ']+annihilator.freeenergylist)
                 energy_writer.writerow([u'ΔGˢᵒˡᵛᵉʳʳ']+annihilator.freeenergyerrorlist)
+                energy_writer.writerow([u'ΔGˢᵒˡᵛᵇᵃʳᶦᵗᵉʳ']+annihilator.freeenergylistviabariter)
+                energy_writer.writerow([u'ΔGˢᵒˡᵛᵉʳʳᵇᵃʳᶦᵗᵉʳ']+annihilator.freeenergyerrorlistviabariter)
+                energy_writer.writerow([u'ΔGˢᵒˡᵛᵇᵒᵒᵗˢᵗʳᵃᵖ']+annihilator.freeenergylistviabootstrap)
+                energy_writer.writerow([u'ΔGˢᵒˡᵛᵉʳʳᵇᵒᵒᵗˢᵗʳᵃᵖ']+annihilator.freeenergyerrorlistviabootstrap)
+                energy_writer.writerow([u'ΔGˢᵒˡᵛᶠʷᵈ']+annihilator.freeenergylistfwd)
+                energy_writer.writerow([u'ΔGˢᵒˡᵛᵉʳʳᶠʷᵈ']+annihilator.freeenergyerrorlistfwd)
                 energy_writer.writerow([u'ΔHˢᵒˡᵛ']+annihilator.enthalpylist)
                 energy_writer.writerow([u'ΔHˢᵒˡᵛᵉʳʳ']+annihilator.enthalpyerrorlisttotal)
                 energy_writer.writerow([u'ΔSˢᵒˡᵛ']+annihilator.entropylist)
@@ -151,6 +201,12 @@ def SumTheFreeEnergyStepsFromBAR(annihilator):
             elif annihilator.complexation==True:
                 energy_writer.writerow([u'ΔGᶜᵒᵐᵖ']+annihilator.freeenergylist)
                 energy_writer.writerow([u'ΔGᶜᵒᵐᵖᵉʳʳ']+annihilator.freeenergyerrorlist)
+                energy_writer.writerow([u'ΔGᶜᵒᵐᵖᵇᵃʳᶦᵗᵉʳ']+annihilator.freeenergylistviabariter)
+                energy_writer.writerow([u'ΔGᶜᵒᵐᵖᵉʳʳᵇᵃʳᶦᵗᵉʳ']+annihilator.freeenergyerrorlistviabariter)
+                energy_writer.writerow([u'ΔGᶜᵒᵐᵖᵇᵒᵒᵗˢᵗʳᵃᵖ']+annihilator.freeenergylistviabootstrap)
+                energy_writer.writerow([u'ΔGᶜᵒᵐᵖᵉʳʳᵇᵒᵒᵗˢᵗʳᵃᵖ']+annihilator.freeenergyerrorlistviabootstrap)
+                energy_writer.writerow([u'ΔGᶜᵒᵐᵖᶠʷᵈ']+annihilator.freeenergylistfwd)
+                energy_writer.writerow([u'ΔGᶜᵒᵐᵖᵉʳʳᶠʷᵈ']+annihilator.freeenergyerrorlistfwd)
                 energy_writer.writerow([u'ΔHᶜᵒᵐᵖ']+annihilator.enthalpylist)
                 energy_writer.writerow([u'ΔHᶜᵒᵐᵖᵉʳʳ']+annihilator.enthalpyerrorlisttotal)
                 energy_writer.writerow([u'ΔSᶜᵒᵐᵖ']+annihilator.entropylist)
