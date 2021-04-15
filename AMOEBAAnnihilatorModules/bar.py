@@ -102,7 +102,7 @@ def SumTheFreeEnergyStepsFromBAR(annihilator):
                 annihilator.freeenergylistviabariter.append(freeenergy)
                 annihilator.freeenergyerrorlistviabariter.append(freenergyerror)
 
-            elif 'Free Energy via BAR Bootstrap' in line and foundfreeenergyline==False: # for some cases Free Energy via BAR Iteration does not appear
+            elif 'Free Energy via BAR Bootstrap' in line: 
                 foundfreeenergyline=True
                 linesplit=line.split()
                 freeenergy=float(linesplit[5])
@@ -110,9 +110,6 @@ def SumTheFreeEnergyStepsFromBAR(annihilator):
                 newstring=line[index+3:]
                 newstringlinesplit=newstring.split()
                 freenergyerror=float(newstringlinesplit[0])
-                annihilator.freeenergy+=freeenergy
-                annihilator.freeenergylist.append(freeenergy)
-                annihilator.freeenergyerrorlist.append(freenergyerror)
                 annihilator.freeenergyviabootstrap+=freeenergy
                 annihilator.freeenergylistviabootstrap.append(freeenergy)
                 annihilator.freeenergyerrorlistviabootstrap.append(freenergyerror)
