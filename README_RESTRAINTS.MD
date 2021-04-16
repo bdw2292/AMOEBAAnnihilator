@@ -5,6 +5,7 @@ Protein-ligand restraints are usually used in bindng free energy calculations so
 There is a missing step from the standard state (ligand that can freely move at the standard concentration) to the restrained state. The free energy change for this step can be evaluated either analytically or numerically.
 This free energy change is often called DeltaG_correction or DeltaG_restraint.
 DeltaG_restraint should be positive for binding/solvation, and negative for unbinding/desolvation.
+* In output CSV file the value is referenced under ΔGᵃⁿᵃᶜᵒᵐᵖᶜᵒʳʳ 
 
 
 * Types of restraint

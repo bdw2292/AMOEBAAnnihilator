@@ -4,12 +4,54 @@
 * Store all program inputs and outputs (free energies, entropy, enthalpy) into dictionaries and output into CSV (UTF-8) format (viewable in excel).
 
 * Gibbs Free Energy Change Table 
-* ΔGˢᵒˡᵛ	ΔGˢᵒˡᵛᵉʳʳ	ΔGᶜᵒᵐᵖᶜᵒʳʳ	ΔGᶜᵒᵐᵖᵘⁿᶜᵒʳʳ	ΔGᶜᵒᵐᵖᶜᵒʳʳᵉʳʳ	ΔGᵃⁿᵃᶜᵒᵐᵖᶜᵒʳʳ	ΔGᵇᶦⁿᵈᶜᵒʳʳ	ΔGᵇᶦⁿᵈᶜᵒʳʳᵉʳʳ
+* solv=Solvation, comp=complexation, err=error, corr=corrected, uncorr=uncorrected, bind=binding, ana=analytical 
+``` 
+ΔGˢᵒˡᵛ
+ΔGˢᵒˡᵛᵉʳʳ
+ΔGᶜᵒᵐᵖᶜᵒʳʳ
+ΔGᶜᵒᵐᵖᵘⁿᶜᵒʳʳ
+ΔGᶜᵒᵐᵖᶜᵒʳʳᵉʳʳ
+ΔGᵃⁿᵃᶜᵒᵐᵖᶜᵒʳʳ
+ΔGᵇᶦⁿᵈᶜᵒʳʳ
+ΔGᵇᶦⁿᵈᶜᵒʳʳᵉʳʳ
+```
 * Enthalpy, Entropy, Gibbs Energy Change Table
-* Modename	Writeout Freq (ps)	Dyntamic Time Step (fs)	Total Time (ns)	Total Dyn Extended Time	Total Dynamic Steps	Total Extended Dynamic Steps	Total ARC File Space Needed
-* ΔGˢᵒˡᵛ	ΔGˢᵒˡᵛᵉʳʳ	ΔHˢᵒˡᵛ	ΔHˢᵒˡᵛᵉʳʳ	ΔSˢᵒˡᵛ	ΔSˢᵒˡᵛᵉʳʳ	ΔGᶜᵒᵐᵖᶜᵒʳʳ	ΔGᶜᵒᵐᵖᵘⁿᶜᵒʳʳ	ΔGᶜᵒᵐᵖᶜᵒʳʳᵉʳʳ	ΔHᶜᵒᵐᵖ	ΔHᶜᵒᵐᵖᵉʳʳ
+* Modename	
+```
+Writeout Freq (ps)	
+Dyntamic Time Step (fs)	
+Total Time (ns)	
+Total Dyn Extended Time	Total Dynamic Steps	
+Total Extended Dynamic Steps	
+Total ARC File Space Needed
+ΔGˢᵒˡᵛ
+ΔGˢᵒˡᵛᵉʳʳ	
+ΔHˢᵒˡᵛ	
+ΔHˢᵒˡᵛᵉʳʳ	
+ΔSˢᵒˡᵛ	
+ΔSˢᵒˡᵛᵉʳʳ	
+ΔGᶜᵒᵐᵖᶜᵒʳʳ	
+ΔGᶜᵒᵐᵖᵘⁿᶜᵒʳʳ	
+ΔGᶜᵒᵐᵖᶜᵒʳʳᵉʳʳ	
+ΔHᶜᵒᵐᵖ	
+ΔHᶜᵒᵐᵖᵉʳʳ
+```
 * Simulation Info Table
-* Total Atom Number	Average Box Size	Prod MD Ensemb	Prod MD Time	Prod MD Steps	Prod MD Arc File Space	Dynamic Writeout Frequency (ps)	Dynamic Time Step (fs)	Equil Time NPT	Equil Time NVT	Physio Counterions	Neut Counterions
+* Prod = Production (not equilibritation dynamics)
+```
+Total Atom Number	
+Average Box Size	
+Prod MD Ensemb	
+Prod MD Time	
+Prod MD Steps	
+Prod MD Arc File Space	
+Dynamic Writeout Frequency (ps)	
+Dynamic Time Step (fs)	
+Equil Time NPT	
+Equil Time NVT	
+Physio Counterions	
+Neut Counterions
+```
 
 ### Excel Instructions
 * Open Excel
