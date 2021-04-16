@@ -19,7 +19,7 @@
 * amoebaannihilator.py                  Handles initial simulation parameter inputs. 
 
 ### Files
-
+* if _pymol.xyz file in name, then it is pymol readable
 
 ## PBC Box Setup
 * *waterbox.xyz                         Final PBC box prior to minimization. 

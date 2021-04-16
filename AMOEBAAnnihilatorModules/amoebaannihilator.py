@@ -314,10 +314,10 @@ class Annihilator():
             self.waterboxfilename='solv'+self.waterboxfilename
             self.WriteToLog('Solvation job')
         self.minwaterboxfilename=self.waterboxfilename.replace('.xyz','min.xyz')
-        self.minwaterboxfilenamepymol=self.minwaterboxfilename.replace('.xyz','.pdb')
+        self.minwaterboxfilenamepymol=self.minwaterboxfilename.replace('.xyz','_pymol.xyz')
         self.equilwaterboxfilename=self.waterboxfilename.replace('.xyz','equil.xyz')
         self.proddynwaterboxfilename=self.waterboxfilename.replace('.xyz','proddyn.xyz')
-        self.proddynwaterboxfilenamepymol=self.proddynwaterboxfilename.replace('.xyz','.pdb')
+        self.proddynwaterboxfilenamepymol=self.proddynwaterboxfilename.replace('.xyz','_pymol.xyz')
         self.equilarcwaterboxfilename=self.equilwaterboxfilename.replace('.xyz','.arc')
         self.proddynarcwaterboxfilename=self.proddynwaterboxfilename.replace('.xyz','.arc')
         self.proddynwaterboxkeyfilename=self.proddynwaterboxfilename.replace('.xyz','.key')
@@ -487,31 +487,25 @@ class Annihilator():
         chg=tmpmol.GetTotalCharge()
         self.ligandcharge=chg 
 
-    def MakeTinkerXYZFileBabelReadable(self,tinkerxyzfilename):
-        temptinkerxyzfilename=tinkerxyzfilename.replace('.xyz','_temp.xyz')
+    
+    def PymolReadableFile(self,tinkerxyzfilename,outputname):
         temp=open(tinkerxyzfilename,'r')
         results=temp.readlines()
         temp.close()
-        temp=open(temptinkerxyzfilename,'w')
-        for lineidx in range(len(results)):
-            line=results[lineidx]
-            if lineidx==0:
-                linesplit=line.split()
-                newline=linesplit[0]+' '+'generic comment'+'\n'
-            else:
-                newline=line
-            temp.write(newline)
+        temp=open(outputname,'w')
+        for line in results:
+            linesplit=line.split()
+            writeline=True
+            if len(linesplit)==6:
+                second=linesplit[1]
+                try:
+                    conv=float(second)
+                    writeline=False
+                except:
+                    continue
+            if writeline==True:
+                temp.write(line)
         temp.close()
-        os.remove(tinkerxyzfilename)
-        os.rename(temptinkerxyzfilename,tinkerxyzfilename) 
-
-    def PymolReadableFile(self,tinkerxyzfilename,outputname):
-        tmpconv = openbabel.OBConversion()
-        tmpconv.SetInFormat('txyz')
-        mol=openbabel.OBMol()
-        tmpconv.ReadFile(mol,tinkerxyzfilename)
-        tmpconv.SetOutFormat('pdb')
-        tmpconv.WriteFile(mol,outputname)
 
                 
 if __name__ == '__main__':

@@ -79,9 +79,8 @@ def CheapMinimizationProtocol(annihilator):
         if os.path.exists(annihilator.outputpath+annihilator.waterboxfilename+'_2'):
             os.rename(annihilator.outputpath+annihilator.waterboxfilename+'_2',annihilator.outputpath+annihilator.minwaterboxfilename)
 
-    #if not os.path.isfile(annihilator.outputpath+annihilator.minwaterboxfilenamepymol):
-    #    annihilator.MakeTinkerXYZFileBabelReadable(annihilator.minwaterboxfilename)
-    #    annihilator.PymolReadableFile(annihilator.minwaterboxfilename,annihilator.minwaterboxfilenamepymol)
+    if not os.path.isfile(annihilator.outputpath+annihilator.minwaterboxfilenamepymol):
+        annihilator.PymolReadableFile(annihilator.minwaterboxfilename,annihilator.minwaterboxfilenamepymol)
 
     if annihilator.restrainatomsduringminimization:
         keymods.RemoveKeyWord(annihilator,annihilator.outputpath+annihilator.configkeyfilename,'restrain-position')
