@@ -4,7 +4,8 @@
 * Store all program inputs and outputs (free energies, entropy, enthalpy) into dictionaries and output into CSV (UTF-8) format (viewable in excel).
 
 * Gibbs Free Energy Change Table 
-* solv=Solvation, comp=complexation, err=error, corr=corrected, uncorr=uncorrected, bind=binding, ana=analytical 
+* solv=Solvation, comp=complexation, err=error, corr=corrected, uncorr=uncorrected, bind=binding, ana=analytical
+* ΔG units of kcal/mol, ΔH units of kcal/mol, ΔS units of kcal/mol/K 
 ``` 
 ΔGˢᵒˡᵛ
 ΔGˢᵒˡᵛᵉʳʳ
