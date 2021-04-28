@@ -217,7 +217,7 @@ def GrabIonIndexes(annihilator,ionnumber,boxfilename,iontypenumber):
 
 
 def ProductionDynamicsProtocol(annihilator):
-    if len(annihilator.mutlambdascheme)!=0:
+    if len(annihilator.mutlambdascheme)==0:
         if not os.path.isfile(annihilator.outputpath+annihilator.lambdakeyfilename):
             shutil.copyfile(annihilator.outputpath+annihilator.configkeyfilename,annihilator.outputpath+annihilator.lambdakeyfilename)
             string='ligand'+' '
